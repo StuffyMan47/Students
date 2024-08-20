@@ -1,3 +1,5 @@
+using Students.DataBase;
+
 namespace Students
 {
     public class Program
@@ -8,6 +10,8 @@ namespace Students
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+            builder.Services.AddDbContext<AppDBContext>();
 
             var app = builder.Build();
 
