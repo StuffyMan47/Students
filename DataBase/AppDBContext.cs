@@ -11,7 +11,8 @@ public class AppDBContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder modelBuilder)
     {
-        modelBuilder.UseSqlServer(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\Master\Documents\Student.mdf;Integrated Security=True;Connect Timeout=30");
+        //тут надо указать свой путь к mdf файлу
+        modelBuilder.UseSqlServer(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=E:\repos\Students\DataBase\Student.mdf;Integrated Security=True");
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
