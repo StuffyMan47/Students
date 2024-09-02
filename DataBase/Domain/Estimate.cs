@@ -7,4 +7,5 @@ public class Estimate
     public DateTime Date { get; set; }
 
     public Student Student { get; set; }
+    public EdProgram Program { get; set; }
 }

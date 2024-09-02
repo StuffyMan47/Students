@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Students.DataBase;
 using Students.Models;
 using System.Diagnostics;
 
@@ -7,7 +8,7 @@ namespace Students.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-
+        private readonly AppDBContext _context;
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;

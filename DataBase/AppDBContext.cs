@@ -8,6 +8,7 @@ public class AppDBContext : DbContext
     public DbSet<Class> Classes { get; set; } = null!;
     public DbSet<Estimate> Estimates { get; set; } = null!;
     public DbSet<Student> Students { get; set; } = null!;
+    public DbSet<EdProgram> EdPrograms { get; set; } = null!;
 
     protected override void OnConfiguring(DbContextOptionsBuilder modelBuilder)
     {

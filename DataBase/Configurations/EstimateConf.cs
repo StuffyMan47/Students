@@ -9,9 +9,9 @@ public class EstimateConf : IEntityTypeConfiguration<Estimate>
     public void Configure(EntityTypeBuilder<Estimate> builder)
     {
         builder.HasKey(x => x.Id);
+        builder.HasIndex(x => x.Id).IsUnique();
 
         builder.HasOne(x => x.Student).WithMany(x => x.Estimates);
-
-        builder.HasIndex(x => x.Id).IsUnique();
+        builder.HasOne(x => x.Program).WithMany().HasForeignKey(x => x.Program);
     }
 }

@@ -9,9 +9,9 @@ public class ClassConf : IEntityTypeConfiguration<Class>
     public void Configure(EntityTypeBuilder<Class> builder)
     {
         builder.HasKey(x => x.Id);
+        builder.HasIndex(x => x.Id).IsUnique();
 
         builder.HasMany(x => x.Students).WithOne(x => x.Class);
-
-        builder.HasIndex(x => x.Id).IsUnique();
+        builder.HasMany(x => x.Programs).WithOne(x => x.Class);
     }
 }
