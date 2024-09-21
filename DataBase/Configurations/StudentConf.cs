@@ -13,6 +13,7 @@ public class StudentConf : IEntityTypeConfiguration<Student>
 
         builder.HasOne(x => x.Class).WithMany(x => x.Students);
         builder.HasMany(x => x.Estimates).WithOne(x => x.Student);
+        builder.HasOne(x => x.EdProgram).WithMany(x => x.Students);
 
         builder.HasIndex(x => x.Id).IsUnique();
     }

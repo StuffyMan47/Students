@@ -21,9 +21,6 @@
             <th>
                 @Html.DisplayNameFor(model => model.FullName)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ShortName)
-            </th>
             <th></th>
         </tr>
     </thead>
@@ -32,9 +29,6 @@
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.FullName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ShortName)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
