@@ -8,4 +8,5 @@ public class EdProgram
 
     public Class Class { get; set; }
     public List<Student> Students { get; set; }
+    public List<Estimate> Estimates { get; set; }
 }
