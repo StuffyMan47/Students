@@ -3,12 +3,13 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc;
 using Students.DataBase.Domain;
 using Students.DataBase;
+using Microsoft.EntityFrameworkCore;
 
 namespace Students.Models
 {
-    public class IndexModel : PageModel
+    public class IndexModel(AppDBContext dBContext) : PageModel
     {
-        private readonly AppDBContext _context;
+        //private readonly AppDBContext _context;
 
         [BindProperty(SupportsGet = true)]
         public int SelectedSpecialty { get; set; }
@@ -17,25 +18,25 @@ namespace Students.Models
         public IEnumerable<Student> Students { get; set; }
         public IEnumerable<EdProgram> EdPrograms { get; set; }
 
-        public void OnGet()
+        public async void OnGet()
         {
-            Specialties = _context.Classes.Select(s => new SelectListItem
+            Specialties = await dBContext.Classes.Select(s => new SelectListItem
             {
                 Value = s.Id.ToString(),
                 Text = s.Name
-            });
+            }).ToListAsync();
         }
 
         public void OnPost()
         {
-            Specialties = _context.Classes.Select(s => new SelectListItem
+            Specialties = dBContext.Classes.Select(s => new SelectListItem
             {
                 Value = s.Id.ToString(),
                 Text = s.Name
             });
 
-            Students = _context.Students.Where(x=>x.Class.Id == SelectedSpecialty);
-            EdPrograms = _context.EdPrograms.Where(x=>x.Class.Id == SelectedSpecialty);
+            Students = dBContext.Students.Where(x=>x.Class.Id == SelectedSpecialty);
+            EdPrograms = dBContext.EdPrograms.Where(x=>x.Class.Id == SelectedSpecialty);
         }
     }
 }
