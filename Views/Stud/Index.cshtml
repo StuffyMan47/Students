@@ -1,40 +1,52 @@
 ﻿@model PageDto
 
-<ul>
-    @foreach (var student in Model.Students)
-    {
-        <li>@student.Name</li>
-    }
-</ul>
-<select>
-    @foreach (var specialty in Model.EdProgram)
-    {
-        <option value="@specialty.Id">@specialty.Name</option>
-    }
-</select>
-<table class="table">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Subject</th>
-            <th>Grade</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var student in Model.Students)
+<form method="post">
+    <select name="specialtyId">
+        @foreach (var specialty in Model.Class)
         {
+            <option value="@specialty.Id">@specialty.Name</option>
+        }
+    </select>
+    <input type="submit" value="Show Students" />
+</form>
+
+@if (Model.Students != null)
+{
+    <table class="table">
+        <thead>
             <tr>
-                <td>@student.Name</td>
-                @for (var i = 0; i < student.Grades.Count; i++)
+                <th>Студенты</th>
+                @foreach (var students in Model.Students)
                 {
-                    <td>@student.Grades[i].Subject</td>
-                    <td>@student.Grades[i].Value</td>
-                    <td>
-                        <a asp-action="UpdateGrade" asp-route-gradeId="@student.Grades[i].Id" asp-route-newValue="5">Update Grade</a>
-                    </td>
+                    @foreach (var subject in students.Grades)
+                    {
+                        <th>@subject.SubjectName</th>
+                    }
                 }
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var student in Model.Students)
+            {
+                <tr>
+                    <td>@student.Name</td>
+                    @foreach (var subject in student.Grades)
+                    {
+                        var grade = student.Grades.FirstOrDefault(g => g.Id == subject.Id);
+                        <td>
+                            @if (grade != null)
+                            {
+                                @grade.Value
+                                <a asp-action="UpdateGrade" asp-route-gradeId="@grade.Id" asp-route-newValue="5">Update Grade</a>
+                            }
+                            else
+                            {
+                                <span>No grade</span>
+                            }
+                        </td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+}

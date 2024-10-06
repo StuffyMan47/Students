@@ -18,6 +18,7 @@ public class Specialty
 public class Grade
 {
     public int Id { get; set; }
-    public string Subject { get; set; }
+    public int SubjectId { get; set; }
+    public string SubjectName { get; set; }
     public int Value { get; set; }
 }

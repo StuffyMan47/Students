@@ -11,17 +11,29 @@ public class StudController : Controller
     {
         _context = context;
     }
-
     public async Task<IActionResult> Index()
     {
+        var edProgram = await _context.Classes
+           .Select(x => new ClassDto
+           {
+               Id = x.Id,
+               Name = x.Name,
+           }).ToListAsync();
+
+        return View(new PageDto { Class = edProgram });
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Index(int specialtyId)
+    {
         var students = await _context.Students
-            .Include(x=>x.Estimates)
-            //.Where(s => s.EdProgram.Id == specialtyId)
-            .Select(x=> new StudentsDto
+            .Include(x => x.Estimates)
+            .Where(s => s.Class.Id == specialtyId)
+            .Select(x => new StudentsDto
             {
                 Id = x.Id,
                 Name = x.FullName,
-                Grades = new List<Grade> (x.Estimates.Select(y => new Grade { Id = y.Id, Subject = y.EdProgramm.Name, Value = y.Value }).ToList()),
+                Grades = new List<Grade>(x.Estimates.Select(y => new Grade { Id = y.Id, SubjectId = y.EdProgrammId, SubjectName = y.EdProgramm.Name, Value = y.Value }).ToList()),
                 Specialty = new Specialty
                 {
                     Id = x.EdProgram.Id,
@@ -30,15 +42,42 @@ public class StudController : Controller
                 SpecialtyId = x.EdProgram.Id,
             })
             .ToListAsync();
-        var edProgram = await _context.EdPrograms
-            .Select(x => new EdProgramDto
+        var edProgram = await _context.Classes
+            .Select(x => new ClassDto
             {
                 Id = x.Id,
                 Name = x.Name,
             }).ToListAsync();
 
-        return View(new PageDto { EdProgram = edProgram, Students = students});
+        return View(new PageDto { Class = edProgram, Students = students });
     }
+    ////public async Task<IActionResult> Index()
+    ////{
+    ////    var students = await _context.Students
+    ////        .Include(x=>x.Estimates)
+    ////        //.Where(s => s.EdProgram.Id == specialtyId)
+    ////        .Select(x=> new StudentsDto
+    ////        {
+    ////            Id = x.Id,
+    ////            Name = x.FullName,
+    ////            Grades = new List<Grade> (x.Estimates.Select(y => new Grade { Id = y.Id, SubjectId = y.EdProgrammId, SubjectName = y.EdProgramm.Name, Value = y.Value }).ToList()),
+    ////            Specialty = new Specialty
+    ////            {
+    ////                Id = x.EdProgram.Id,
+    ////                Name = x.EdProgram.Name,
+    ////            },
+    ////            SpecialtyId = x.EdProgram.Id,
+    ////        })
+    ////        .ToListAsync();
+    ////    var edProgram = await _context.Classes
+    ////        .Select(x => new ClassDto
+    ////        {
+    ////            Id = x.Id,
+    ////            Name = x.Name,
+    ////        }).ToListAsync();
+
+    ////    return View(new PageDto { Class = edProgram, Students = students});
+    ////}
 
     public IActionResult UpdateGrade(int gradeId, int newValue)
     {
@@ -51,6 +90,6 @@ public class StudController : Controller
         grade.Value = newValue;
         _context.SaveChanges();
 
-        return RedirectToAction(nameof(Index), new { specialtyId = grade.Student.EdProgram.Id });
+        return RedirectToAction(nameof(Index), new { specialtyId = grade.Student.Class.Id });
     }
 }

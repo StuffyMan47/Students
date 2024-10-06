@@ -3,5 +3,5 @@
 public class PageDto
 {
     public List<StudentsDto> Students { get; set; } = [];
-    public List<EdProgramDto> EdProgram { get; set; } = [];
+    public List<ClassDto> Class { get; set; } = [];
 }
