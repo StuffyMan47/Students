@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Students.DataBase;
 using Students.Models;
@@ -42,6 +43,7 @@ public class StudController : Controller
                 SpecialtyId = x.EdProgram.Id,
             })
             .ToListAsync();
+
         var edProgram = await _context.Classes
             .Select(x => new ClassDto
             {
@@ -51,43 +53,14 @@ public class StudController : Controller
 
         return View(new PageDto { Class = edProgram, Students = students });
     }
-    ////public async Task<IActionResult> Index()
-    ////{
-    ////    var students = await _context.Students
-    ////        .Include(x=>x.Estimates)
-    ////        //.Where(s => s.EdProgram.Id == specialtyId)
-    ////        .Select(x=> new StudentsDto
-    ////        {
-    ////            Id = x.Id,
-    ////            Name = x.FullName,
-    ////            Grades = new List<Grade> (x.Estimates.Select(y => new Grade { Id = y.Id, SubjectId = y.EdProgrammId, SubjectName = y.EdProgramm.Name, Value = y.Value }).ToList()),
-    ////            Specialty = new Specialty
-    ////            {
-    ////                Id = x.EdProgram.Id,
-    ////                Name = x.EdProgram.Name,
-    ////            },
-    ////            SpecialtyId = x.EdProgram.Id,
-    ////        })
-    ////        .ToListAsync();
-    ////    var edProgram = await _context.Classes
-    ////        .Select(x => new ClassDto
-    ////        {
-    ////            Id = x.Id,
-    ////            Name = x.Name,
-    ////        }).ToListAsync();
 
-    ////    return View(new PageDto { Class = edProgram, Students = students});
-    ////}
-
-    public IActionResult UpdateGrade(int gradeId, int newValue)
+    public async Task<IActionResult> UpdateGrade(int gradeId, string newValue)
     {
-        var grade = _context.Estimates.Find(gradeId);
+        var grade = await _context.Estimates.Include(x=>x.Student).ThenInclude(x=>x.Class).FirstOrDefaultAsync(x=>x.Id == gradeId);
         if (grade == null)
-        {
             return NotFound();
-        }
-
-        grade.Value = newValue;
+        
+        grade.Value = Int32.Parse(newValue);
         _context.SaveChanges();
 
         return RedirectToAction(nameof(Index), new { specialtyId = grade.Student.Class.Id });

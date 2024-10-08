@@ -37,7 +37,13 @@
                             @if (grade != null)
                             {
                                 @grade.Value
-                                <a asp-action="UpdateGrade" asp-route-gradeId="@grade.Id" asp-route-newValue="5">Update Grade</a>
+                                <select id="language">
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                </select>
+                                <a id="updateGradeLink" asp-action="UpdateGrade" asp-route-gradeId="@grade.Id">Update Grade</a>
                             }
                             else
                             {
@@ -50,3 +56,18 @@
         </tbody>
     </table>
 }
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var links = document.querySelectorAll("#updateGradeLink");
+        links.forEach(function (link) {
+            var select = link.previousElementSibling;
+            link.addEventListener("click", function (event) {
+                event.preventDefault();
+                var value = select.value;
+                var url = link.getAttribute("href") + "&newValue=" + value;
+                window.location.href = url;
+            });
+        });
+    });
+</script>
