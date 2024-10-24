@@ -1,0 +1,20 @@
+﻿@model Exams
+
+<form asp-action="GetExams" method="post">
+    <select name="studentId">
+        @foreach (var Students in Model.StudentsList)
+        {
+            <option value="@Students.Id">@Students.Name</option>
+        }
+    </select>
+    <input type="submit" value="Show Students" />
+</form>
+
+@if (Model.Exam.HasValue)
+{
+    <p>Количество сданных экзаменов у @Model.SelectetStudent : @Model.Exam</p>
+}
+else
+{
+    <p>нет сданных экзаменов</p>
+}

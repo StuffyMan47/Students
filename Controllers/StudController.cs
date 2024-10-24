@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Students.DataBase;
 using Students.Models;
@@ -12,6 +11,7 @@ public class StudController : Controller
     {
         _context = context;
     }
+
     public async Task<IActionResult> Index()
     {
         var edProgram = await _context.Classes
@@ -34,7 +34,13 @@ public class StudController : Controller
             {
                 Id = x.Id,
                 Name = x.FullName,
-                Grades = new List<Grade>(x.Estimates.Select(y => new Grade { Id = y.Id, SubjectId = y.EdProgrammId, SubjectName = y.EdProgramm.Name, Value = y.Value }).ToList()),
+                Grades = new List<Grade>(x.Estimates.Select(y => new Grade 
+                { 
+                    Id = y.Id,
+                    SubjectId = y.SubjectId,
+                    SubjectName = y.Subject.Name,
+                    Value = y.Value
+                }).ToList()),
                 Specialty = new Specialty
                 {
                     Id = x.EdProgram.Id,
@@ -56,13 +62,18 @@ public class StudController : Controller
 
     public async Task<IActionResult> UpdateGrade(int gradeId, string newValue)
     {
-        var grade = await _context.Estimates.Include(x=>x.Student).ThenInclude(x=>x.Class).FirstOrDefaultAsync(x=>x.Id == gradeId);
+        var grade = await _context.Estimates
+            .Include(x=>x.Student)
+            .ThenInclude(x=>x.Class)
+            .FirstOrDefaultAsync(x=>x.Id == gradeId);
+
         if (grade == null)
             return NotFound();
         
         grade.Value = Int32.Parse(newValue);
-        _context.SaveChanges();
+        grade.Date = DateTime.Now;
+        await _context.SaveChangesAsync();
 
-        return RedirectToAction(nameof(Index), new { specialtyId = grade.Student.Class.Id });
+        return RedirectToAction(nameof(Index));
     }
 }

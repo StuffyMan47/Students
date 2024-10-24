@@ -12,6 +12,6 @@ public class EstimateConf : IEntityTypeConfiguration<Estimate>
         builder.HasIndex(x => x.Id).IsUnique();
 
         builder.HasOne(x => x.Student).WithMany(x => x.Estimates);
-        builder.HasOne(x => x.EdProgramm).WithMany(x=>x.Estimates);
+        builder.HasOne(x => x.Subject).WithMany(x=>x.Estimates);
     }
 }

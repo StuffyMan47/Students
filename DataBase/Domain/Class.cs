@@ -7,5 +7,5 @@ public class Class
     public string Description { get; set; }
 
     public List<Student> Students { get; set; }
-    public List<EdProgram> Programs { get; set; }
+    public List<Subject> Programs { get; set; }
 }

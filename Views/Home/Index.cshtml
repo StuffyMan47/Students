@@ -1,48 +1,4 @@
-﻿@* @page
-@model IndexModel
-@{
-    ViewData["Title"] = "Home Page";
-}
-
-<h2>Выберите специальность</h2>
-
-<form method="post">
-    <select asp-for="SelectedSpecialty" asp-items="Model.Specialties">
-        <option value="">Выберите специальность</option>
-    </select>
-    <input type="submit" value="Показать студентов" />
-</form>
-
-@if (Model.Students != null && Model.Students.Any())
-{
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Студент</th>
-                @foreach (var subject in Model.Specialties)
-                {
-                    <th>@subject.Value</th>
-                }
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var student in Model.Students)
-            {
-                <tr>
-                    <td>@student.FullName</td>
-                    @foreach (var subject in Model.EdPrograms)
-                    {
-                        <td>
-                            @student.Estimates.FirstOrDefault(g => g.Student.Id == subject.Id)?.Value
-                        </td>
-                    }
-                </tr>
-            }
-        </tbody>
-    </table>
-} *@
-
-@{
+﻿@{
     ViewData["Title"] = "Home Page";
 }
 

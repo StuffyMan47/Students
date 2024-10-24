@@ -46,35 +46,6 @@ namespace Students.Migrations
                     b.ToTable("Classes");
                 });
 
-            modelBuilder.Entity("Students.DataBase.Domain.EdProgram", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("ClassId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ClassId");
-
-                    b.HasIndex("Id")
-                        .IsUnique();
-
-                    b.ToTable("EdPrograms");
-                });
-
             modelBuilder.Entity("Students.DataBase.Domain.Estimate", b =>
                 {
                     b.Property<int>("Id")
@@ -86,10 +57,10 @@ namespace Students.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("EdProgrammId")
+                    b.Property<int>("StudentId")
                         .HasColumnType("int");
 
-                    b.Property<int>("StudentId")
+                    b.Property<int>("SubjectId")
                         .HasColumnType("int");
 
                     b.Property<int>("Value")
@@ -97,12 +68,12 @@ namespace Students.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("EdProgrammId");
-
                     b.HasIndex("Id")
                         .IsUnique();
 
                     b.HasIndex("StudentId");
+
+                    b.HasIndex("SubjectId");
 
                     b.ToTable("Estimates");
                 });
@@ -172,34 +143,52 @@ namespace Students.Migrations
                     b.ToTable("Students");
                 });
 
-            modelBuilder.Entity("Students.DataBase.Domain.EdProgram", b =>
+            modelBuilder.Entity("Students.DataBase.Domain.Subject", b =>
                 {
-                    b.HasOne("Students.DataBase.Domain.Class", "Class")
-                        .WithMany("Programs")
-                        .HasForeignKey("ClassId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
 
-                    b.Navigation("Class");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ClassId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClassId");
+
+                    b.HasIndex("Id")
+                        .IsUnique();
+
+                    b.ToTable("EdPrograms");
                 });
 
             modelBuilder.Entity("Students.DataBase.Domain.Estimate", b =>
                 {
-                    b.HasOne("Students.DataBase.Domain.EdProgram", "EdProgramm")
-                        .WithMany("Estimates")
-                        .HasForeignKey("EdProgrammId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Students.DataBase.Domain.Student", "Student")
                         .WithMany("Estimates")
                         .HasForeignKey("StudentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("EdProgramm");
+                    b.HasOne("Students.DataBase.Domain.Subject", "Subject")
+                        .WithMany("Estimates")
+                        .HasForeignKey("SubjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Student");
+
+                    b.Navigation("Subject");
                 });
 
             modelBuilder.Entity("Students.DataBase.Domain.Student", b =>
@@ -210,7 +199,7 @@ namespace Students.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Students.DataBase.Domain.EdProgram", "EdProgram")
+                    b.HasOne("Students.DataBase.Domain.Subject", "EdProgram")
                         .WithMany("Students")
                         .HasForeignKey("EdProgramId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -221,6 +210,17 @@ namespace Students.Migrations
                     b.Navigation("EdProgram");
                 });
 
+            modelBuilder.Entity("Students.DataBase.Domain.Subject", b =>
+                {
+                    b.HasOne("Students.DataBase.Domain.Class", "Class")
+                        .WithMany("Programs")
+                        .HasForeignKey("ClassId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Class");
+                });
+
             modelBuilder.Entity("Students.DataBase.Domain.Class", b =>
                 {
                     b.Navigation("Programs");
@@ -228,16 +228,16 @@ namespace Students.Migrations
                     b.Navigation("Students");
                 });
 
-            modelBuilder.Entity("Students.DataBase.Domain.EdProgram", b =>
+            modelBuilder.Entity("Students.DataBase.Domain.Student", b =>
+                {
+                    b.Navigation("Estimates");
+                });
+
+            modelBuilder.Entity("Students.DataBase.Domain.Subject", b =>
                 {
                     b.Navigation("Estimates");
 
                     b.Navigation("Students");
-                });
-
-            modelBuilder.Entity("Students.DataBase.Domain.Student", b =>
-                {
-                    b.Navigation("Estimates");
                 });
 #pragma warning restore 612, 618
         }

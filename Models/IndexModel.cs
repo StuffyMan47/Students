@@ -16,7 +16,7 @@ namespace Students.Models
 
         public IEnumerable<SelectListItem> Specialties { get; set; }
         public IEnumerable<Student> Students { get; set; }
-        public IEnumerable<EdProgram> EdPrograms { get; set; }
+        public IEnumerable<Subject> EdPrograms { get; set; }
 
         public async void OnGet()
         {

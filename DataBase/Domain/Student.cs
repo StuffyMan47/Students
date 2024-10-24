@@ -16,6 +16,6 @@ public class Student
     public bool FullTime { get; set; }
 
     public Class Class { get; set; }
-    public EdProgram EdProgram { get; set; }
+    public Subject EdProgram { get; set; }
     public List<Estimate> Estimates { get; set; }
 }
