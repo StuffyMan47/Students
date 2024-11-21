@@ -3,11 +3,11 @@ using Microsoft.EntityFrameworkCore;
 using Students.DataBase;
 using Students.Models;
 
-public class StudController : Controller
+public class Task2Controller : Controller
 {
     private readonly AppDBContext _context;
 
-    public StudController(AppDBContext context)
+    public Task2Controller(AppDBContext context)
     {
         _context = context;
     }

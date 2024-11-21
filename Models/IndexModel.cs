@@ -9,8 +9,6 @@ namespace Students.Models
 {
     public class IndexModel(AppDBContext dBContext) : PageModel
     {
-        //private readonly AppDBContext _context;
-
         [BindProperty(SupportsGet = true)]
         public int SelectedSpecialty { get; set; }
 

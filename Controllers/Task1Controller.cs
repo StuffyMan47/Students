@@ -5,11 +5,11 @@ using Students.Models;
 
 namespace Students.Controllers;
 
-public class Stud1Controller : Controller
+public class Task1Controller : Controller
 {
     private readonly AppDBContext _context;
 
-    public Stud1Controller(AppDBContext context)
+    public Task1Controller(AppDBContext context)
     {
         _context = context;
     }
